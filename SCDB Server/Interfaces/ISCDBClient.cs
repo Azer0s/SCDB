@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace SCDB_API
+namespace Interfaces
 {
-    interface IScdbClient
+    public interface IScdbClient
     {
         bool Connect();
         string Connection { get; set; }

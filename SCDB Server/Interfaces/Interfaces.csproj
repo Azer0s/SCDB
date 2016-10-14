@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDbManager.cs" />
+    <Compile Include="ISCDBClient.cs" />
+    <Compile Include="ISCDBCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

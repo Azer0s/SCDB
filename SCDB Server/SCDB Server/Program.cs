@@ -16,7 +16,7 @@ namespace SCDB_Server
             ILog logger = LogManager.GetLogger(typeof(Program));
             Console.Title = "SCDB Server Console";
             var uri = new Uri($"{url}:{port}/");
-            using (var nancy = new NancyHost(uri))
+            using (var nancy = new NancyHost(uri, new ScdbBootstrapper()))
             {
                 try
                 {

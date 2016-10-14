@@ -5,8 +5,6 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCDB Server", "SCDB Server\SCDB Server.csproj", "{76455E5B-5F13-4239-9FBA-5221EA3CBCFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCDB API", "SCDB API\SCDB API.csproj", "{1080CF3D-DEB3-449E-B5F3-83D4ADD59F76}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCBD Client", "SCBD Client\SCBD Client.csproj", "{93A54DD7-8729-4662-B150-251F3FFD3531}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{903CFE81-5B43-4F7D-8820-073A27F24981}"
@@ -14,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{4F87BFEE-A9B5-4F84-A8ED-0F83BF9D5B82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{ED365C91-3348-4251-9E3A-A92BA5D4A98E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCDB API", "SCDB API\SCDB API.csproj", "{226408BD-99F1-44B7-B4E9-AAC2A1280C56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		{76455E5B-5F13-4239-9FBA-5221EA3CBCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76455E5B-5F13-4239-9FBA-5221EA3CBCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76455E5B-5F13-4239-9FBA-5221EA3CBCFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1080CF3D-DEB3-449E-B5F3-83D4ADD59F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1080CF3D-DEB3-449E-B5F3-83D4ADD59F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1080CF3D-DEB3-449E-B5F3-83D4ADD59F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1080CF3D-DEB3-449E-B5F3-83D4ADD59F76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{93A54DD7-8729-4662-B150-251F3FFD3531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93A54DD7-8729-4662-B150-251F3FFD3531}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93A54DD7-8729-4662-B150-251F3FFD3531}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{ED365C91-3348-4251-9E3A-A92BA5D4A98E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED365C91-3348-4251-9E3A-A92BA5D4A98E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED365C91-3348-4251-9E3A-A92BA5D4A98E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{226408BD-99F1-44B7-B4E9-AAC2A1280C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{226408BD-99F1-44B7-B4E9-AAC2A1280C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{226408BD-99F1-44B7-B4E9-AAC2A1280C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{226408BD-99F1-44B7-B4E9-AAC2A1280C56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
