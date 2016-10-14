@@ -8,6 +8,7 @@ namespace SCDB_API
 {
     interface IScdbClient
     {
+        bool Connect();
         string Connection { get; set; }
         bool State(string statement);
         List<string> Ask(string question);

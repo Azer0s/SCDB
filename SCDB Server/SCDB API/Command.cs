@@ -12,7 +12,7 @@ namespace SCDB_API
 
         private string PlaceholderDefaultCommand { get; }
 
-        public string QueryCommandWithParams { get; }
+        public string QueryCommandWithParams => PlaceHolderCommandWithParams;
         private string PlaceHolderCommandWithParams { get; set; }
 
         public Command(string command)
@@ -23,6 +23,11 @@ namespace SCDB_API
         public void ReplaceWithParameter(string placeholder, string value)
         {
             PlaceHolderCommandWithParams = PlaceHolderCommandWithParams.Replace("@" + placeholder, value);
+        }
+
+        public override string ToString()
+        {
+            return PlaceHolderCommandWithParams;
         }
     }
 }

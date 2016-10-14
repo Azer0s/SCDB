@@ -1,13 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SCDB_API
 {
     public class Client : IScdbClient
     {
-        public string Connection { get; set; }
+        private string _connection;
+        public bool Connect()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(_connection);
+                    var result = client.GetAsync("/connect");
+                    string resultAsString = result.Result.Content.ReadAsStringAsync().ToString();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public string Connection
+        {
+            get { return _connection; }
+            set { _connection = "http://" + value; }
+        }
 
         public bool State(string statement)
         {
@@ -23,9 +50,23 @@ namespace SCDB_API
         {
             try
             {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(Connection + "/ask");
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("statement", statement)
+                    });
+                    var result = client.PostAsync("/state", content).Result;
+                    var resultContent = result.Content.ReadAsStringAsync().Result;
 
-                return true;
+                    if (resultContent == "n/a")
+                    {
+                        return false;
+                    }
 
+                    return true;
+                }
             }
             catch (Exception)
             {
@@ -47,7 +88,18 @@ namespace SCDB_API
         {
             try
             {
-                return new List<string>();
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(Connection);
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("question", question)
+                    });
+                    var result = client.PostAsync("/ask", content).Result;
+                    var resultContent = result.Content.ReadAsStringAsync().Result;
+
+                    return resultContent == "n/a" ? null : JsonConvert.DeserializeObject<List<string>>(resultContent);
+                }
             }
             catch (Exception)
             {

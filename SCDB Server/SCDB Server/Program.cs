@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Exceptions;
 using log4net;
 using Nancy.Hosting.Self;
 
@@ -43,7 +44,7 @@ namespace SCDB_Server
             }
             catch (Exception)
             {
-                logger.Warn("No port specified, listening on port 80!");
+                logger.Warn("No port specified, listening on port 80!",new PortNotSpecifiedException(""));
             }
 
             try
@@ -52,7 +53,7 @@ namespace SCDB_Server
             }
             catch (Exception)
             {
-                logger.Warn("No address specified, listening on http://localhost");
+                logger.Warn("No address specified, listening on http://localhost",new AddressNotSpecifiedException(""));
             }
 
             var p = new Program();
