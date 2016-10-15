@@ -16,7 +16,7 @@ namespace SCDB_Server
 
         public ScdbModule(IDbManager db)
         {
-            _logger = Cache.Instance.logger;
+            _logger = Cache.Instance.Logger;
             _db = db;
 
             Post["/state"] = _ =>
@@ -32,7 +32,7 @@ namespace SCDB_Server
             Get["/connect"] = _ =>
             {
                 _logger.Info("User connected to the database");
-                return System.Configuration.ConfigurationManager.AppSettings["motd"];
+                return Cache.Instance.Motd;
             };
         }
     }

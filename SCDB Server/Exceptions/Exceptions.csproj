@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AddressNotSpecifiedException.cs" />
     <Compile Include="DatabaseConnectException.cs" />
+    <Compile Include="NoMotdSpecifiedException.cs" />
     <Compile Include="PortNotSpecifiedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

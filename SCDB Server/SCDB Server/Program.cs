@@ -11,9 +11,11 @@ namespace SCDB_Server
 {
     class Program
     {
-        private void Start(int port, string url)
+        private void Start()
         {
-            ILog logger = Cache.Instance.logger;
+            var port = Cache.Instance.Port;
+            var url = Cache.Instance.Address;
+            ILog logger = Cache.Instance.Logger;
             Console.Title = "SCDB Server Console";
             var uri = new Uri($"{url}:{port}/");
             using (var nancy = new NancyHost(uri, new ScdbBootstrapper()))
@@ -35,30 +37,74 @@ namespace SCDB_Server
         public static void Main()
         {
             Console.Clear();
-            Cache.Instance.logger = LogManager.GetLogger(typeof(Program));
-            ILog logger = Cache.Instance.logger;
-            int port = 80;
-            string url = "http://localhost";
+            Cache.Instance.Logger = LogManager.GetLogger(typeof(Program));
+            ILog logger = Cache.Instance.Logger;
+
+            logger.Info("Loading objects into cache...");
+            bool someErrors = false;
+
             try
             {
-                port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["port"]);
+                Cache.Instance.Motd = System.Configuration.ConfigurationManager.AppSettings["motd"];
+                if (Cache.Instance.Motd == null)
+                {
+                    logger.Warn("No motd specified, using default!", new NoMotdSpecifiedException(""));
+                    someErrors = true;
+                    Cache.Instance.Motd = "SCDB Server connected!";
+                }
             }
             catch (Exception)
             {
-                logger.Warn("No port specified, listening on port 80!",new PortNotSpecifiedException(""));
+                logger.Warn("No motd specified, using default!", new NoMotdSpecifiedException(""));
+                someErrors = true;
+                Cache.Instance.Motd = "SCDB Server connected!";
             }
 
             try
             {
-                url = System.Configuration.ConfigurationManager.AppSettings["address"];
+                Cache.Instance.Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["port"]);
+                if (Cache.Instance.Port == 0)
+                {
+                    logger.Warn("No port specified, listening on port 8066!", new PortNotSpecifiedException(""));
+                    someErrors = true;
+                    Cache.Instance.Port = 8066;
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("No port specified, listening on port 8066!",new PortNotSpecifiedException(""));
+                someErrors = true;
+                Cache.Instance.Port = 8066;
+            }
+
+            try
+            {
+                Cache.Instance.Address = System.Configuration.ConfigurationManager.AppSettings["address"];
+                if (Cache.Instance.Address == null)
+                {
+                    logger.Warn("No address specified, listening on http://localhost", new AddressNotSpecifiedException(""));
+                    someErrors = true;
+                    Cache.Instance.Address = "http://localhost";
+                }
             }
             catch (Exception)
             {
                 logger.Warn("No address specified, listening on http://localhost",new AddressNotSpecifiedException(""));
+                someErrors = true;
+                Cache.Instance.Address = "http://localhost";
+            }
+
+            if (someErrors)
+            {
+                logger.Warn("Some errors ocurred while loading the configuration, using defaults!");
+            }
+            else
+            {
+                logger.Info("Loaded objects into cache succesfuly");
             }
 
             var p = new Program();
-            p.Start(port,url);
+            p.Start();
         }
     }
 }
