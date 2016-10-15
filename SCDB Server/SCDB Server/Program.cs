@@ -48,14 +48,12 @@ namespace SCDB_Server
                 Cache.Instance.Motd = System.Configuration.ConfigurationManager.AppSettings["motd"];
                 if (Cache.Instance.Motd == null)
                 {
-                    logger.Warn("No motd specified, using default!", new NoMotdSpecifiedException(""));
-                    someErrors = true;
-                    Cache.Instance.Motd = "SCDB Server connected!";
+                    throw new MotdNotSpecifiedException("");
                 }
             }
             catch (Exception)
             {
-                logger.Warn("No motd specified, using default!", new NoMotdSpecifiedException(""));
+                logger.Warn("No motd specified, using default!", new MotdNotSpecifiedException(""));
                 someErrors = true;
                 Cache.Instance.Motd = "SCDB Server connected!";
             }
@@ -65,9 +63,7 @@ namespace SCDB_Server
                 Cache.Instance.Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["port"]);
                 if (Cache.Instance.Port == 0)
                 {
-                    logger.Warn("No port specified, listening on port 8066!", new PortNotSpecifiedException(""));
-                    someErrors = true;
-                    Cache.Instance.Port = 8066;
+                    throw new PortNotSpecifiedException("");
                 }
             }
             catch (Exception)
@@ -82,9 +78,7 @@ namespace SCDB_Server
                 Cache.Instance.Address = System.Configuration.ConfigurationManager.AppSettings["address"];
                 if (Cache.Instance.Address == null)
                 {
-                    logger.Warn("No address specified, listening on http://localhost", new AddressNotSpecifiedException(""));
-                    someErrors = true;
-                    Cache.Instance.Address = "http://localhost";
+                    throw new AddressNotSpecifiedException("");
                 }
             }
             catch (Exception)
@@ -92,6 +86,28 @@ namespace SCDB_Server
                 logger.Warn("No address specified, listening on http://localhost",new AddressNotSpecifiedException(""));
                 someErrors = true;
                 Cache.Instance.Address = "http://localhost";
+            }
+
+            try
+            {
+                Cache.Instance.AppConnectionString =
+                    System.Configuration.ConfigurationManager.ConnectionStrings["app"].ConnectionString;
+                Cache.Instance.DataConnectionString =
+                    System.Configuration.ConfigurationManager.ConnectionStrings["data"].ConnectionString;
+                if (Cache.Instance.AppConnectionString == null && Cache.Instance.AppConnectionString == "")
+                {
+                    throw new ConnectionStringNotSpecifiedException("");
+                }
+                if (Cache.Instance.DataConnectionString == null && Cache.Instance.DataConnectionString == "")
+                {
+                    throw new ConnectionStringNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Fatal("Could not load connectionStrings! Exiting programm!", new ConnectionStringNotSpecifiedException(""));
+                Console.ReadKey();
+                Environment.Exit(0);
             }
 
             if (someErrors)

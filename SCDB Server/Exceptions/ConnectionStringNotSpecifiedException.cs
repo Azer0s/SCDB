@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Exceptions
 {
-    public class NoMotdSpecifiedException : Exception
+    public class ConnectionStringNotSpecifiedException : Exception
     {
-        public NoMotdSpecifiedException(string message) : base(message){ }
+        public ConnectionStringNotSpecifiedException(string message) : base(message){ }
     }
 }
