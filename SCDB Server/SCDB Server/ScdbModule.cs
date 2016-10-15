@@ -26,7 +26,7 @@ namespace SCDB_Server
 
             Post["/ask"] = _ =>
             {
-                return "";
+                return "['Anna','Felix','Bob']";
             };
 
             Get["/connect"] = _ =>

@@ -57,7 +57,6 @@ namespace SCBD_Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
             if (!string.IsNullOrEmpty(textBox2.Text))
             {
                 if (!client.IsConnected)
@@ -66,6 +65,7 @@ namespace SCBD_Client
                     return;
                 }
                 List<string> result = client.Ask(textBox2.Text);
+                //TODO add rows
                 if (result != null)
                 {
                     int count = 0;

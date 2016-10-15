@@ -251,6 +251,7 @@ paket-files/
 .idea/
 *.sln.iml
 
-App.config
-Log4NetCfg.xml
+# Configuration Files
+SCDB Server/SCDB Server/App.config
+SCDB Server/SCDB Server/Log4NetCfg.xml
 

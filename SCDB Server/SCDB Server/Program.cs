@@ -28,7 +28,7 @@ namespace SCDB_Server
                 }
                 catch (Exception e)
                 {
-                    logger.Fatal("Couldnt start Nancy-Server", e);
+                    logger.Fatal("Couldnt start Nancy-Server! Exiting programm!", e);
                 }
                 Console.ReadKey();
             }
