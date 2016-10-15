@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Interfaces;
 using Newtonsoft.Json;
 
@@ -13,6 +14,15 @@ namespace SCDB_API
     public class Client : IScdbClient
     {
         private string _connection;
+
+        public bool IsConnected { get; private set; } = false;
+
+        public string Connection
+        {
+            get { return _connection; }
+            set { _connection = "http://" + value; }
+        }
+
         public bool Connect()
         {
             try
@@ -23,6 +33,7 @@ namespace SCDB_API
                     var result = client.GetAsync("/connect");
                     string resultAsString = result.Result.Content.ReadAsStringAsync().ToString();
                 }
+                IsConnected = true;
                 return true;
             }
             catch (Exception)
@@ -31,14 +42,8 @@ namespace SCDB_API
             }
         }
 
-        public string Connection
-        {
-            get { return _connection; }
-            set { _connection = "http://" + value; }
-        }
-
         public bool State(string statement)
-        {
+        {  
             return SendStatement(statement);
         }
 
@@ -49,16 +54,16 @@ namespace SCDB_API
 
         private bool SendStatement(string statement)
         {
+            if (!IsConnected)
+            {
+                return false;
+            }
             try
             {
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(Connection + "/ask");
-                    var content = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string, string>("statement", statement)
-                    });
-                    var result = client.PostAsync("/state", content).Result;
+                    var result = client.GetAsync("/state").Result;
                     var resultContent = result.Content.ReadAsStringAsync().Result;
 
                     if (resultContent == "n/a")
@@ -87,6 +92,10 @@ namespace SCDB_API
 
         private List<string> SendQuestion(string question)
         {
+            if (!IsConnected)
+            {
+                return null;
+            }
             try
             {
                 using (var client = new HttpClient())

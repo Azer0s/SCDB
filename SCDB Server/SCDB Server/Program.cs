@@ -35,7 +35,8 @@ namespace SCDB_Server
         public static void Main()
         {
             Console.Clear();
-            ILog logger = LogManager.GetLogger(typeof(Program));
+            Cache.Instance.logger = LogManager.GetLogger(typeof(Program));
+            ILog logger = Cache.Instance.logger;
             int port = 80;
             string url = "http://localhost";
             try

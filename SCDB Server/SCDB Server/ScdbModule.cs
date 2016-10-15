@@ -29,7 +29,11 @@ namespace SCDB_Server
                 return "";
             };
 
-            Get["/connect"] = _ => System.Configuration.ConfigurationManager.AppSettings["motd"];
+            Get["/connect"] = _ =>
+            {
+                _logger.Info("User connected to the database");
+                return System.Configuration.ConfigurationManager.AppSettings["motd"];
+            };
         }
     }
 }

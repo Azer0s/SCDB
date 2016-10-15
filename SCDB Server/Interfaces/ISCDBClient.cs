@@ -4,8 +4,9 @@ namespace Interfaces
 {
     public interface IScdbClient
     {
-        bool Connect();
+        bool IsConnected { get; }
         string Connection { get; set; }
+        bool Connect();
         bool State(string statement);
         List<string> Ask(string question);
         bool State(IScdbCommand statement);
