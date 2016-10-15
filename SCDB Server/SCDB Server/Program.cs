@@ -13,7 +13,7 @@ namespace SCDB_Server
     {
         private void Start(int port, string url)
         {
-            ILog logger = LogManager.GetLogger(typeof(Program));
+            ILog logger = Cache.Instance.logger;
             Console.Title = "SCDB Server Console";
             var uri = new Uri($"{url}:{port}/");
             using (var nancy = new NancyHost(uri, new ScdbBootstrapper()))

@@ -15,7 +15,7 @@ namespace SCDB_Server
     {
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
-            ILog logger = LogManager.GetLogger(typeof(Program));
+            ILog logger = Cache.Instance.logger;
             base.ConfigureApplicationContainer(container);
 
             //register classes

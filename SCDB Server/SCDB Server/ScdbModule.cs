@@ -16,7 +16,7 @@ namespace SCDB_Server
 
         public ScdbModule(IDbManager db)
         {
-            _logger = LogManager.GetLogger(typeof(Program));
+            _logger = Cache.Instance.logger;
             _db = db;
 
             Post["/state"] = _ =>
