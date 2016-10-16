@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCDB Server", "SCDB Server\SCDB Server.csproj", "{76455E5B-5F13-4239-9FBA-5221EA3CBCFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCBD Client", "SCBD Client\SCBD Client.csproj", "{93A54DD7-8729-4662-B150-251F3FFD3531}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SCBD Desktop", "SCBD Client\SCBD Desktop.csproj", "{93A54DD7-8729-4662-B150-251F3FFD3531}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{903CFE81-5B43-4F7D-8820-073A27F24981}"
 EndProject
