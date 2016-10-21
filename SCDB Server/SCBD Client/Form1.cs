@@ -31,6 +31,8 @@ namespace SCBD_Client
             {
                 dataGridView1[0, 0].Value = "Couldn´t connect to the database!";
             }
+
+            //TODO Initialize language tools
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -116,6 +118,11 @@ namespace SCBD_Client
             {
                 dataGridView1[0, 0].Value = "Couldn´t connect to the database!";
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //TODO Recognize
         }
     }
 }
