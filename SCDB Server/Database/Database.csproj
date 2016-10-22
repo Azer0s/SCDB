@@ -53,6 +53,10 @@
       <Project>{39b5e0c2-a66d-4629-afbd-3a1907acf8e4}</Project>
       <Name>Cache</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Exceptions\Exceptions.csproj">
+      <Project>{4F87BFEE-A9B5-4F84-A8ED-0F83BF9D5B82}</Project>
+      <Name>Exceptions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Interfaces\Interfaces.csproj">
       <Project>{ED365C91-3348-4251-9E3A-A92BA5D4A98E}</Project>
       <Name>Interfaces</Name>

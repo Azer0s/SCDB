@@ -5,8 +5,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Exceptions;
 using log4net;
 
 namespace Database
@@ -30,9 +32,9 @@ namespace Database
                 connection.Close();
                 logger.Info("Connection succesful!");
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                logger.Fatal("Can not open connection to SQL Server!", e);
+                logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(""));
                 logger.Warn("Exiting programm!");
                 Console.ReadLine();
                 Environment.Exit(0);
