@@ -94,7 +94,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScdbBootstrapper.cs" />
@@ -110,9 +109,14 @@
   <ItemGroup>
     <Content Include="Log4NetCfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Cache\Cache.csproj">
+      <Project>{39b5e0c2-a66d-4629-afbd-3a1907acf8e4}</Project>
+      <Name>Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Database\Database.csproj">
       <Project>{903CFE81-5B43-4F7D-8820-073A27F24981}</Project>
       <Name>Database</Name>

@@ -24,9 +24,9 @@ namespace SCDB_Server
                 return "";
             };
 
-            Post["/ask"] = _ =>
+            Post["/ask",true] = async (x, ct) =>
             {
-                return "['Anna','Felix','Bob']";
+                return "['Anna','Felix','Bob','Anthony']";
             };
 
             Get["/connect"] = _ =>

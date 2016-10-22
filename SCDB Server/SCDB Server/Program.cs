@@ -105,7 +105,8 @@ namespace SCDB_Server
             }
             catch (Exception)
             {
-                logger.Fatal("Could not load connectionStrings! Exiting programm!", new ConnectionStringNotSpecifiedException(""));
+                logger.Fatal("Could not load connectionStrings!", new ConnectionStringNotSpecifiedException(""));
+                logger.Warn("Exiting programm!");
                 Console.ReadKey();
                 Environment.Exit(0);
             }
