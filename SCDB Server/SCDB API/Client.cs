@@ -62,16 +62,15 @@ namespace SCDB_API
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(Connection + "/ask");
-                    var result = client.GetAsync("/state").Result;
+                    client.BaseAddress = new Uri(Connection);
+                    var content = new FormUrlEncodedContent(new[]
+{
+                        new KeyValuePair<string, string>("statement", statement)
+                    });
+                    var result = client.PostAsync("/state", content).Result;
                     var resultContent = result.Content.ReadAsStringAsync().Result;
 
-                    if (resultContent == "n/a")
-                    {
-                        return false;
-                    }
-
-                    return true;
+                    return resultContent != "false";
                 }
             }
             catch (Exception)

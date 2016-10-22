@@ -19,15 +19,9 @@ namespace SCDB_Server
             _logger = Cache.Instance.Logger;
             _db = db;
 
-            Post["/state"] = _ =>
-            {
-                return "";
-            };
+            Post["/state",true] = async (x,ct)=> await _db.State(Request.Form.statement);
 
-            Post["/ask",true] = async (x, ct) =>
-            {
-                return "['Anna','Felix','Bob','Anthony']";
-            };
+            Post["/ask",true] = async (x, ct) => await _db.Ask(Request.Form.question);
 
             Get["/connect"] = _ =>
             {
