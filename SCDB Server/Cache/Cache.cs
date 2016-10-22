@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using log4net;
 
 public sealed class Cache
@@ -12,6 +13,7 @@ public sealed class Cache
     public int Port { get; set; }
     public string Address { get; set; }
     public string Motd { get; set; }
+    public List<string> VerbExceptions { get; set; }
     public static Cache Instance { get { return lazy.Value; } }
 
     private Cache()

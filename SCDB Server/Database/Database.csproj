@@ -61,6 +61,10 @@
       <Project>{ED365C91-3348-4251-9E3A-A92BA5D4A98E}</Project>
       <Name>Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Linguistics\Linguistics.csproj">
+      <Project>{B211AFC1-0728-4F73-8054-23715F223B27}</Project>
+      <Name>Linguistics</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

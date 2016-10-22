@@ -19,7 +19,7 @@ namespace SCDB_Server
             base.ConfigureApplicationContainer(container);
 
             //register classes
-            container.Register<IDbManager, TestManager>();
+            container.Register<IDbManager, DbManager>();
             logger.Info("IoCContainer initialized!");
         }
     }
