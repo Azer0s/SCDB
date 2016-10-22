@@ -1,6 +1,7 @@
 ﻿using Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Http.Headers;
@@ -106,7 +107,7 @@ namespace Database
                 }
                 catch (SqlException e)
                 {
-                    _logger.Error("Something went wrong while inserting data!");
+                    _logger.Error("Something went wrong while inserting data!",new DatabaseException(e.Message));
                     return false;
                 }
                 finally
