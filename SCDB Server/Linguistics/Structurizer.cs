@@ -12,13 +12,20 @@ namespace Linguistics
     {
         public static SPO GetStructure(string input)
         {
-            var sentence = input.Split(' ');
+            var splitSentence = new List<string>(input.Split(' '));
+
+            for (int i = 0; i < splitSentence.Count; i++)
+            {
+                splitSentence.Remove("");
+            }
+
+            var sentence = splitSentence.ToArray();
+
             EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
             string[] tags = posTagger.Tag(sentence);
             var analayzed = new List<TypeWordCombo>();
             for (int i = 0; i < sentence.Length; i++)
             {
-
                 analayzed.Add(new TypeWordCombo(tags[i], sentence[i]));
             }
 
