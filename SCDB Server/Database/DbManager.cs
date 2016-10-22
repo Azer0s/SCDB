@@ -32,9 +32,9 @@ namespace Database
                 connection.Close();
                 logger.Info("Connection succesful!");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(""));
+                logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(e.Message));
                 logger.Warn("Exiting programm!");
                 Console.ReadLine();
                 Environment.Exit(0);
