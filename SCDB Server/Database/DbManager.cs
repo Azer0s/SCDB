@@ -16,41 +16,43 @@ namespace Database
 {
     public class DbManager : IDbManager
     {
-        private ILog logger;
+        private readonly ILog _logger;
+        private readonly string _insert;
 
         public DbManager()
         {
-            logger = Cache.Instance.Logger;
+            _logger = Cache.Instance.Logger;
+            _insert = Cache.Instance.Insert;
 
             var connection = new SqlConnection(Cache.Instance.AppConnectionString);
 
-            logger.Info("Trying to connect to the database 'scdb_app'...");
+            _logger.Info("Trying to connect to the database 'scdb_app'...");
             try
             {
                 connection.Open();
                 connection.Close();
-                logger.Info("Connection to 'scdb_app' succesful!");
+                _logger.Info("Connection to 'scdb_app' succesful!");
             }
             catch (Exception e)
             {
-                logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(e.Message));
-                logger.Warn("Exiting programm!");
+                _logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(e.Message));
+                _logger.Warn("Exiting programm!");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
 
             connection = new SqlConnection(Cache.Instance.DataConnectionString);
-            logger.Info("Trying to connect to the database 'scdb_data'...");
+            _logger.Info("Trying to connect to the database 'scdb_data'...");
             try
             {
                 connection.Open();
                 connection.Close();
-                logger.Info("Connection to 'scdb_data' succesful!");
+                _logger.Info("Connection to 'scdb_data' succesful!");
             }
             catch (Exception e)
             {
-                logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(e.Message));
-                logger.Warn("Exiting programm!");
+                _logger.Fatal("Can not open connection to SQL Server!", new DatabaseConnectException(e.Message));
+                _logger.Warn("Exiting programm!");
                 Console.ReadLine();
                 Environment.Exit(0);
             }
@@ -69,13 +71,13 @@ namespace Database
 
         public string AskServer(string question)
         {
-            logger.Info("User sent a question");
+            _logger.Info("User sent a question");
             return "";
         }
 
         public bool StateOnServer(string statement)
         {
-            logger.Info("User stated information");
+            _logger.Info("User stated information");
 
             var statementList = statement.Split('.');
             var statements = new List<SPO>();
@@ -90,11 +92,8 @@ namespace Database
 
             foreach (var variable in statements)
             {
-                Console.WriteLine(variable.ToString());
-                string insertStatement = "DECLARE @Subject_Id AS uniqueidentifier=NEWID();DECLARE @Verb_Id AS uniqueidentifier=NEWID();DECLARE @Object_Id AS uniqueidentifier=NEWID();INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject_Name); INSERT INTO Verb (Id, Subject, Name) VALUES (@Verb_Id, @Subject_Id, @Verb_Name); INSERT INTO Object (Id, Verb, Name) VALUES (@Object_Id, @Verb_Id, @Object_Name);";
-
                 var connection = new SqlConnection(Cache.Instance.DataConnectionString);
-                var command = new SqlCommand(insertStatement,connection);
+                var command = new SqlCommand(_insert,connection);
 
                 command.Parameters.AddWithValue("@Subject_Name", variable.Subject);
                 command.Parameters.AddWithValue("@Verb_Name", variable.Predicate);
@@ -107,7 +106,7 @@ namespace Database
                 }
                 catch (SqlException e)
                 {
-                    logger.Error("Something went wrong while inserting data!");
+                    _logger.Error("Something went wrong while inserting data!");
                     return false;
                 }
                 finally
@@ -121,7 +120,7 @@ namespace Database
 
         public void LoadExceptions()
         {
-            logger.Info("Loading verb exeptions...");
+            _logger.Info("Loading verb exeptions...");
             var connection = new SqlConnection(Cache.Instance.AppConnectionString);   
             connection.Open();
 
@@ -136,7 +135,7 @@ namespace Database
             }
             catch (Exception)
             {
-                logger.Error("Something went wrong while loading the exceptions!");
+                _logger.Error("Something went wrong while loading the exceptions!");
                 return;
             }
 
@@ -148,11 +147,11 @@ namespace Database
                     {
                         Cache.Instance.VerbExceptions.Add(reader.GetString(0));
                     }
-                    logger.Info("Loaded exceptions succesfully!");
+                    _logger.Info("Loaded exceptions succesfully!");
                 }
                 else
                 {
-                    logger.Error("No rows found.");
+                    _logger.Error("No rows found.");
                 }
             }
         }

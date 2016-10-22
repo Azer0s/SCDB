@@ -14,6 +14,7 @@ public sealed class Cache
     public string Address { get; set; }
     public string Motd { get; set; }
     public List<string> VerbExceptions { get; set; }
+    public string Insert { get; set; }
     public static Cache Instance { get { return lazy.Value; } }
 
     private Cache()

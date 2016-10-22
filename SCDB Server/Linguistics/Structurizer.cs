@@ -23,32 +23,33 @@ namespace Linguistics
 
             EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
             string[] tags = posTagger.Tag(sentence);
-            var analayzed = new List<TypeWordCombo>();
+            var analyzed = new List<TypeWordCombo>();
             for (int i = 0; i < sentence.Length; i++)
             {
-                analayzed.Add(new TypeWordCombo(tags[i], sentence[i]));
+                analyzed.Add(new TypeWordCombo(tags[i], sentence[i]));
             }
 
             var spo = new SPO();
-            if (analayzed[0].Type == "NNP" || analayzed[0].Type == "PRP")
+            if (analyzed[0].Type == "NNP" || analyzed[0].Type == "PRP")
             {
-                spo.Subject = analayzed[0].Word;
+                spo.Subject = analyzed[0].Word;
             }
 
-            if (analayzed[1].Type == "VBG" || analayzed[1].Type == "VBN" || analayzed[1].Type == "VPB" || analayzed[1].Type == "MD" || Cache.Instance.VerbExceptions.Contains(analayzed[1].Word))
+            //TODO: check for negation
+            if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBP" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
             {
-                spo.Predicate = analayzed[1].Word;
+                spo.Predicate = analyzed[1].Word;
             }
 
-            if (analayzed[1].Type == "VBZ" && !Cache.Instance.VerbExceptions.Contains(analayzed[1].Word))
+            if ((analyzed[1].Type == "VBZ" || analyzed[1].Type == "NNS") && !Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
             {
-                spo.Predicate = GetNormalForm(analayzed[1].Word);
+                spo.Predicate = GetNormalForm(analyzed[1].Word);
             }
 
             StringBuilder sb = new StringBuilder();
-            for (int i = 2; i < analayzed.Count; i++)
+            for (int i = 2; i < analyzed.Count; i++)
             {
-                sb.Append(analayzed[i].Word);
+                sb.Append(analyzed[i].Word);
                 sb.Append(" ");
             }
             spo.Object = sb.ToString();

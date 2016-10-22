@@ -47,6 +47,26 @@ namespace SCDB_Server
 
             try
             {
+                Cache.Instance.Insert = System.Configuration.ConfigurationManager.AppSettings["insert"];
+                if (Cache.Instance.Insert == null)
+                {
+                    throw new StatementNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("Insert statement not specified, using default!", new StatementNotSpecifiedException("Insert statement not specified!"));
+                someErrors = true;
+                Cache.Instance.Insert =
+                    "DECLARE @Subject_Id AS uniqueidentifier=NEWID();" +
+                    "DECLARE @Verb_Id AS uniqueidentifier=NEWID();" +
+                    "DECLARE @Object_Id AS uniqueidentifier=NEWID();" +
+                    "INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject_Name); " +
+                    "INSERT INTO Verb (Id, Subject, Name) VALUES (@Verb_Id, @Subject_Id, @Verb_Name); " +
+                    "INSERT INTO Object (Id, Verb, Name) VALUES (@Object_Id, @Verb_Id, @Object_Name);";
+            }
+            try
+            {
                 Cache.Instance.Motd = System.Configuration.ConfigurationManager.AppSettings["motd"];
                 if (Cache.Instance.Motd == null)
                 {
@@ -119,7 +139,7 @@ namespace SCDB_Server
             }
             else
             {
-                logger.Info("Loaded objects into cache succesfuly");
+                logger.Info("Loaded objects into cache succesfuly!");
             }
 
             var p = new Program();
