@@ -59,6 +59,7 @@ namespace Database
 
             LoadExceptions();
         }
+
         public Task<string> Ask(string question)
         {
             return Task.Run(() => AskServer(question));
@@ -86,7 +87,15 @@ namespace Database
             {
                 if (v != "" && v != " ")
                 {
-                    statements.Add(Structurizer.GetStructure(v));
+                    try
+                    {
+                        statements.Add(Structurizer.GetStructure(v));
+                    }
+                    catch (Exception)
+                    {
+                        _logger.Error("Something went wrong while processing data!");
+                        return false;
+                    }
                 }
             }
 

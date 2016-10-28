@@ -30,7 +30,7 @@ namespace Linguistics
             }
 
             var spo = new SPO();
-            if (analyzed[0].Type == "NNP" || analyzed[0].Type == "PRP")
+            if (analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP")
             {
                 spo.Subject = analyzed[0].Word;
             }
