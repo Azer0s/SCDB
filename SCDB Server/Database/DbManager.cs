@@ -114,9 +114,9 @@ namespace Database
                     connection.Open();
                     command.ExecuteNonQuery();
                 }
-                catch (SqlException e)
+                catch (Exception)
                 {
-                    _logger.Error("Something went wrong while inserting data!",new DatabaseException(e.Message));
+                    _logger.Error("Something went wrong while inserting data!");
                     return false;
                 }
                 finally
