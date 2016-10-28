@@ -10,6 +10,9 @@ namespace Linguistics
 {
     public class Structurizer
     {
+
+        public static EnglishMaximumEntropyPosTagger PosTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
+
         public static SPO GetStructure(string input)
         {
             var splitSentence = new List<string>(input.Split(' '));
@@ -21,8 +24,7 @@ namespace Linguistics
 
             var sentence = splitSentence.ToArray();
 
-            EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
-            string[] tags = posTagger.Tag(sentence);
+            string[] tags = PosTagger.Tag(sentence);
             var analyzed = new List<TypeWordCombo>();
             for (int i = 0; i < sentence.Length; i++)
             {
@@ -35,7 +37,6 @@ namespace Linguistics
                 spo.Subject = analyzed[0].Word;
             }
 
-            //TODO: check for negation
             if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBP" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
             {
                 spo.Predicate = analyzed[1].Word;
