@@ -19,23 +19,23 @@ namespace SCDB_Server
             _logger = Cache.Instance.Logger;
             _db = db;
 
-            Post["/state", true] = async (x, ct) =>
+            Post["/state"] = _ =>
             {
                 try
                 {
-                    return await _db.State(Request.Form.statement);
+                    return _db.State(Request.Form.statement, Request.UserHostAddress).ToString();
                 }
                 catch (Exception)
                 {
-                    return false;
+                    return "false";
                 }
             };
 
-            Post["/ask", true] = async (x, ct) =>
+            Post["/ask"] = _ =>
             {
                 try
                 {
-                    return await _db.Ask(Request.Form.question);
+                    return _db.Ask(Request.Form.question, Request.UserHostAddress);
                 }
                 catch (Exception)
                 {
@@ -45,7 +45,7 @@ namespace SCDB_Server
 
             Get["/connect"] = _ =>
             {
-                _logger.Info("User connected to the database");
+                _logger.Info($"{Request.UserHostAddress} connected to the database");
                 return Cache.Instance.Motd;
             };
         }

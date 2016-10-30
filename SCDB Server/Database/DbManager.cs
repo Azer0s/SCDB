@@ -61,27 +61,27 @@ namespace Database
             LoadExceptions();
         }
 
-        public Task<string> Ask(string question)
+        public string Ask(string question, string user)
         {
-            return Task.Run(() => AskServer(question));
+            return AskServer(question, user);
         }
 
-        public Task<bool> State(string statement)
+        public bool State(string statement, string user)
         {
-            return Task.Run(() => StateOnServer(statement));
+            return StateOnServer(statement, user);
         }
 
-        public string AskServer(string question)
+        private string AskServer(string question, string user)
         {
             _logger.Info("User sent a question");
             return "";
         }
 
-        public bool StateOnServer(string statement)
+        private bool StateOnServer(string statement, string user)
         {
             if (Cache.Instance.LogLevel>1)
             {
-                _logger.Info("User stated information");
+                _logger.Info($"{user} stated information");
             }
 
             var statementList = statement.Split('.');
@@ -141,7 +141,7 @@ namespace Database
             return true;
         }
 
-        public void LoadExceptions()
+        private void LoadExceptions()
         {
             _logger.Info("Loading verb exeptions...");
             var connection = new SqlConnection(Cache.Instance.AppConnectionString);   
@@ -151,7 +151,7 @@ namespace Database
 
             var command = new SqlCommand("SELECT * FROM Exceptions", connection);
 
-            SqlDataReader reader = null;
+            SqlDataReader reader;
             try
             {
                 reader = command.ExecuteReader();

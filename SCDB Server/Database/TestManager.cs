@@ -12,22 +12,22 @@ namespace Database
     public class TestManager : IDbManager
     {
         public string ConnectionString { get; set; }
-        public ILog logger;
+        private readonly ILog _logger;
 
         public TestManager()
         {
-            logger = Cache.Instance.Logger;
+            _logger = Cache.Instance.Logger;
         }
-        public Task<string> Ask(string question)
+        public string Ask(string question, string user)
         {
-            logger.Info(question);
-            return Task.Run(() => "['Anna','Felix','Bob','Anthony']");
+            _logger.Info(question);
+            return "['Anna','Felix','Bob','Anthony']";
         }
 
-        public Task<bool> State(string statement)
+        public bool State(string statement, string user)
         {
-            logger.Info(statement);
-            return Task.Run(() => true);
+            _logger.Info(statement);
+            return true;
         }
     }
 }
