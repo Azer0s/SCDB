@@ -5,7 +5,7 @@ namespace Interfaces
 {
     public interface IDbManager
     {
-        Task<string> Ask(string question);
-        Task<bool> State(string statement);
+        string Ask(string question, string user);
+        bool State(string statement, string user);
     }
 }

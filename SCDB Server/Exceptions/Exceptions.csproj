@@ -43,6 +43,7 @@
     <Compile Include="AddressNotSpecifiedException.cs" />
     <Compile Include="ConnectionStringNotSpecifiedException.cs" />
     <Compile Include="DatabaseConnectException.cs" />
+    <Compile Include="LogLevelNotSpecifiedException.cs" />
     <Compile Include="MotdNotSpecifiedException.cs" />
     <Compile Include="PortNotSpecifiedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

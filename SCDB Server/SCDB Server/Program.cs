@@ -47,6 +47,20 @@ namespace SCDB_Server
 
             try
             {
+                Cache.Instance.LogLevel = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["loglevel"]);
+                if (Cache.Instance.LogLevel == 0)
+                {
+                    throw new LogLevelNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("No log level specified, using default!", new LogLevelNotSpecifiedException(""));
+                someErrors = true;
+                Cache.Instance.LogLevel = 2;
+            }
+            try
+            {
                 Cache.Instance.Insert = System.Configuration.ConfigurationManager.AppSettings["insert"];
                 if (Cache.Instance.Insert == null)
                 {
