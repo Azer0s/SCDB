@@ -29,10 +29,8 @@ namespace SCBD_Client
             }
             else
             {
-                dataGridView1[0, 0].Value = "Couldn´t connect to the database!";
+                dataGridView1[0, 0].Value = "Not connected to a database!";
             }
-
-            //TODO Initialize language tools
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -45,7 +43,7 @@ namespace SCBD_Client
                 bool state = client.State(textBox1.Text);
                 if (!client.IsConnected)
                 {
-                    dataGridView1[0, 0].Value = "Not connected to the database!";
+                    dataGridView1[0, 0].Value = "Not connected to a database!";
                     return;
                 }
                 if (state)
@@ -67,7 +65,7 @@ namespace SCBD_Client
                 if (!client.IsConnected)
                 {
                     dataGridView1.Rows.Add();
-                    dataGridView1[0, 0].Value = "Not connected to the database!";
+                    dataGridView1[0, 0].Value = "Not connected to a database!";
                     return;
                 }
                 List<string> result = client.Ask(textBox2.Text);
@@ -95,13 +93,19 @@ namespace SCBD_Client
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.Add();
 
+            if (!string.IsNullOrEmpty(cn1.Text))
+            {
+                client.Connection = cn1.Text;
+            }
+
             if (client.Connect())
             {
                 dataGridView1[0, 0].Value = "Connection succesful!";
+                cn.Text = cn1.Text;
             }
             else
             {
-                dataGridView1[0, 0].Value = "Couldn´t connect to the database!";
+                dataGridView1[0, 0].Value = "Couldn´t connect to a database!";
             }
         }
 
@@ -110,19 +114,20 @@ namespace SCBD_Client
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.Add();
 
+            if (!string.IsNullOrEmpty(cn.Text))
+            {
+                client.Connection = cn.Text;
+            }
+
             if (client.Connect())
             {
                 dataGridView1[0, 0].Value = "Connection succesful!";
+                cn1.Text = cn.Text;
             }
             else
             {
-                dataGridView1[0, 0].Value = "Couldn´t connect to the database!";
+                dataGridView1[0, 0].Value = "Couldn´t connect to a database!";
             }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            //TODO Recognize
         }
     }
 }

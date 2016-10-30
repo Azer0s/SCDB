@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Interfaces;
@@ -44,7 +46,7 @@ namespace SCDB_API
         }
 
         public bool State(string statement)
-        {  
+        {
             return SendStatement(statement);
         }
 
@@ -59,35 +61,28 @@ namespace SCDB_API
             {
                 return false;
             }
+
+            bool succes = false;
+
             try
             {
-                using (var client = new SCDBWebClient())
+                using (var client = new HttpClient())
                 {
-                    var url = Connection + "/state";
-                    var content = new NameValueCollection()
+                    client.BaseAddress = new Uri(Connection);
+                    var content = new FormUrlEncodedContent(new[]
                     {
-                        {"statement", statement }
-                    };
-                    byte[] responsBytes = client.UploadValues(url, "POST", content);
-                    string responsebody = System.Text.Encoding.UTF8.GetString(responsBytes);
-                    //TODO Get response
-                    return responsebody != "false";
+                            new KeyValuePair<string, string>("statement", statement)
+                        });
+                    var result = client.PostAsync("/state", content).Result;
+                    string resultContent = result.Content.ReadAsStringAsync().Result;
+                    succes = Boolean.Parse(resultContent.ToLower());
                 }
             }
             catch (Exception)
             {
-                return false;
+                // ignored
             }
-        }
-
-        private class SCDBWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                WebRequest w = base.GetWebRequest(address);
-                w.Timeout = 5*1000;
-                return w;
-            }
+            return succes;
         }
 
         public bool State(IScdbCommand statement)
