@@ -26,6 +26,13 @@ namespace SCDB_API
             set { _connection = "http://" + value; }
         }
 
+        public Client(string connection)
+        {
+            Connection = connection;
+        }
+
+        public Client() { }
+
         public bool Connect()
         {
             try
