@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -60,22 +61,32 @@ namespace SCDB_API
             }
             try
             {
-                using (var client = new HttpClient())
+                using (var client = new SCDBWebClient())
                 {
-                    client.BaseAddress = new Uri(Connection);
-                    var content = new FormUrlEncodedContent(new[]
-{
-                        new KeyValuePair<string, string>("statement", statement)
-                    });
-                    var result = client.PostAsync("/state", content).Result;
-                    var resultContent = result.Content.ReadAsStringAsync().Result;
-
-                    return resultContent != "false";
+                    var url = Connection + "/state";
+                    var content = new NameValueCollection()
+                    {
+                        {"statement", statement }
+                    };
+                    byte[] responsBytes = client.UploadValues(url, "POST", content);
+                    string responsebody = System.Text.Encoding.UTF8.GetString(responsBytes);
+                    //TODO Get response
+                    return responsebody != "false";
                 }
             }
             catch (Exception)
             {
                 return false;
+            }
+        }
+
+        private class SCDBWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                WebRequest w = base.GetWebRequest(address);
+                w.Timeout = 5*1000;
+                return w;
             }
         }
 

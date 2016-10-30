@@ -79,7 +79,10 @@ namespace Database
 
         public bool StateOnServer(string statement)
         {
-            _logger.Info("User stated information");
+            if (Cache.Instance.LogLevel>1)
+            {
+                _logger.Info("User stated information");
+            }
 
             var statementList = statement.Split('.');
             var statements = new List<SPO>();
@@ -94,7 +97,10 @@ namespace Database
                     }
                     catch (Exception)
                     {
-                        _logger.Error("Something went wrong while processing data!");
+                        if (Cache.Instance.LogLevel>0)
+                        {
+                            _logger.Error("Something went wrong while processing data!");
+                        }
                         return false;
                     }
                 }
@@ -116,7 +122,10 @@ namespace Database
                 }
                 catch (Exception)
                 {
-                    _logger.Error("Something went wrong while inserting data!");
+                    if (Cache.Instance.LogLevel > 0)
+                    {
+                        _logger.Error("Something went wrong while inserting data!");
+                    }
                     return false;
                 }
                 finally
@@ -125,6 +134,10 @@ namespace Database
                 }
             }
 
+            if (Cache.Instance.LogLevel > 2)
+            {
+                _logger.Info("Statement succesful!");
+            }
             return true;
         }
 

@@ -15,6 +15,7 @@ public sealed class Cache
     public string Motd { get; set; }
     public List<string> VerbExceptions { get; set; }
     public string Insert { get; set; }
+    public int LogLevel { get; set; } = 2;
     public static Cache Instance { get { return lazy.Value; } }
 
     private Cache()
