@@ -13,7 +13,7 @@ namespace Linguistics
 
         public static EnglishMaximumEntropyPosTagger PosTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
 
-        public static SPO GetStructure(string input)
+        public static SPO GetStructure(string input, bool question)
         {
             var splitSentence = new List<string>(input.Split(' '));
 
@@ -32,7 +32,12 @@ namespace Linguistics
             }
 
             var spo = new SPO();
-            if (analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP")
+            if ((analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP") && !question)
+            {
+                spo.Subject = analyzed[0].Word;
+            }
+
+            if ((analyzed[0].Type == "WP" || analyzed[0].Type == "WRB" || analyzed[0].Type == "WDT" || analyzed[0].Type == "WP$") && question)
             {
                 spo.Subject = analyzed[0].Word;
             }

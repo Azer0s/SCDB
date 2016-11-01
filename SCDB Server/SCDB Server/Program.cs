@@ -47,7 +47,8 @@ namespace SCDB_Server
 
             try
             {
-                Cache.Instance.LogLevel = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["loglevel"]);
+                Cache.Instance.LogLevel =
+                    Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["loglevel"]);
                 if (Cache.Instance.LogLevel == 0)
                 {
                     throw new LogLevelNotSpecifiedException("");
@@ -69,7 +70,8 @@ namespace SCDB_Server
             }
             catch (Exception)
             {
-                logger.Warn("Insert statement not specified, using default!", new StatementNotSpecifiedException("Insert statement not specified!"));
+                logger.Warn("Insert statement not specified, using default!",
+                    new StatementNotSpecifiedException("Insert statement not specified!"));
                 someErrors = true;
                 Cache.Instance.Insert =
                     "DECLARE @Subject_Id AS uniqueidentifier=NEWID();" +
@@ -78,6 +80,21 @@ namespace SCDB_Server
                     "INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject_Name); " +
                     "INSERT INTO Verb (Id, Subject, Name) VALUES (@Verb_Id, @Subject_Id, @Verb_Name); " +
                     "INSERT INTO Object (Id, Verb, Name) VALUES (@Object_Id, @Verb_Id, @Object_Name);";
+            }
+            try
+            {
+                Cache.Instance.Select = System.Configuration.ConfigurationManager.AppSettings["select"];
+                if (Cache.Instance.Select == null)
+                {
+                    throw new StatementNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("Select statement not specified, using default!",
+                    new StatementNotSpecifiedException("Select statement not specified!"));
+                someErrors = true;
+                Cache.Instance.Select = "" /*TODO Add default select statement*/;
             }
             try
             {

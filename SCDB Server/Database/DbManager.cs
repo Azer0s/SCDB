@@ -73,8 +73,36 @@ namespace Database
 
         private string AskServer(string question, string user)
         {
-            _logger.Info("User sent a question");
-            return "";
+            if (Cache.Instance.LogLevel > 1)
+            {
+                _logger.Info($"{user} sent a question");
+            }
+
+            var questionList = question.Split('?');
+            var questions = new List<SPO>();
+
+            foreach (var v in questionList)
+            {
+                if (v != "" && v != " ")
+                {
+                    try
+                    {
+                        questions.Add(Structurizer.GetStructure(v,true));
+                    }
+                    catch (Exception)
+                    {
+                        if (Cache.Instance.LogLevel > 0)
+                        {
+                            _logger.Error("Something went wrong while processing data!");
+                        }
+                        return "n/a";
+                    }
+                }
+            }
+
+            //TODO Ask question
+
+            return "n/a";
         }
 
         private bool StateOnServer(string statement, string user)
@@ -93,7 +121,7 @@ namespace Database
                 {
                     try
                     {
-                        statements.Add(Structurizer.GetStructure(v));
+                        statements.Add(Structurizer.GetStructure(v,false));
                     }
                     catch (Exception)
                     {

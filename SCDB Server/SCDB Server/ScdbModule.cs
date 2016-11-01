@@ -45,7 +45,10 @@ namespace SCDB_Server
 
             Get["/connect"] = _ =>
             {
-                _logger.Info($"{Request.UserHostAddress} connected to the database");
+                if (Cache.Instance.LogLevel > 0)
+                {
+                    _logger.Info($"{Request.UserHostAddress} connected to the database");
+                }
                 return Cache.Instance.Motd;
             };
         }
