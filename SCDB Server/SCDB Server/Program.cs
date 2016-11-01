@@ -9,8 +9,14 @@ using Nancy.Hosting.Self;
 
 namespace SCDB_Server
 {
+    /// <summary>
+    /// Entry class for the program.
+    /// </summary>
     class Program
     {
+        /// <summary>
+        /// Starts the Nancy server and initiates all components required by it (including the bootsptrapper and the database manager).
+        /// </summary>
         private void Start()
         {
             var port = Cache.Instance.Port;
@@ -36,6 +42,9 @@ namespace SCDB_Server
             }
         }
 
+        /// <summary>
+        /// Main method. Loads the configuration into the cache, initializes the logger, calls the start method.
+        /// </summary>
         public static void Main()
         {
             Console.Clear();

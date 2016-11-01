@@ -9,11 +9,18 @@ using Nancy;
 
 namespace SCDB_Server
 {
+    /// <summary>
+    /// Class for managing all routes.
+    /// </summary>
     public class ScdbModule : NancyModule
     {
         private readonly IDbManager _db;
         private readonly ILog _logger;
 
+        /// <summary>
+        /// Constructor. Initializes all routes.
+        /// </summary>
+        /// <param name="db">The database manager you want to use.</param>
         public ScdbModule(IDbManager db)
         {
             _logger = Cache.Instance.Logger;

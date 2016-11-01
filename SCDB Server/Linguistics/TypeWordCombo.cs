@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Linguistics
 {
+    /// <summary>
+    /// Stores a tagged word.
+    /// </summary>
     public class TypeWordCombo
     {
         public TypeWordCombo(string type, string word)

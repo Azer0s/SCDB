@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 
 namespace Linguistics
 {
+    /// <summary>
+    /// Stores a sentence as Subject|Predicate|Object.
+    /// </summary>
     public class SPO
     {
         public string Subject { get; set; }
         public string Predicate { get; set; }
         public string Object { get; set; }
 
+        /// <summary>
+        /// Indexer for the SPO object.
+        /// </summary>
+        /// <param name="index">0...Subject; 1...Predicate; 2...Object</param>
+        /// <returns></returns>
         public string this[int index]
         {
             get { return FromIndex(index); }

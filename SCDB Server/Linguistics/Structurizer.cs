@@ -8,11 +8,20 @@ using OpenNLP.Tools.PosTagger;
 
 namespace Linguistics
 {
+    /// <summary>
+    /// Natural language processor of the program.
+    /// </summary>
     public class Structurizer
     {
 
         public static EnglishMaximumEntropyPosTagger PosTagger = new EnglishMaximumEntropyPosTagger("EnglishPOS.nbin");
 
+        /// <summary>
+        /// Tags a sentence and converts it to a SPO object.
+        /// </summary>
+        /// <param name="input">The sentence you want to analyze.</param>
+        /// <param name="question">Whether the sentence is a question.</param>
+        /// <returns>The sentence as a SPO object.</returns>
         public static SPO GetStructure(string input, bool question)
         {
             var splitSentence = new List<string>(input.Split(' '));
@@ -63,6 +72,11 @@ namespace Linguistics
             return spo;
         }
 
+        /// <summary>
+        /// Gets the infinitiv of a verb in the third person singular (present=.
+        /// </summary>
+        /// <param name="verb">The verb you want to convert.</param>
+        /// <returns>The infinitiv of the verb.</returns>
         public static string GetNormalForm(string verb)
         {
             if (verb.Substring(verb.Length - 3) == "ies")

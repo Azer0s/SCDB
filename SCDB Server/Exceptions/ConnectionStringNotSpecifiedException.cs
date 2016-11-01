@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Exceptions
 {
+    /// <summary>
+    /// Exception. Thrown if one of the required connection strings is not specified in the App.config.
+    /// </summary>
     public class ConnectionStringNotSpecifiedException : Exception
     {
         public ConnectionStringNotSpecifiedException(string message) : base(message){ }

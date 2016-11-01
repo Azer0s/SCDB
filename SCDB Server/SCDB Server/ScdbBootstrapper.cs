@@ -11,6 +11,9 @@ using Interfaces;
 
 namespace SCDB_Server
 {
+    /// <summary>
+    /// Custom bootstrapper for Nancy. Loads the database manager in the IoC Container.
+    /// </summary>
     class ScdbBootstrapper : DefaultNancyBootstrapper
     {
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)

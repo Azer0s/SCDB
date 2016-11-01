@@ -15,11 +15,23 @@ using Linguistics;
 
 namespace Database
 {
+    /// <summary>
+    /// Class which manages connections to the database and is responsible for processing statements and questions.
+    /// </summary>
     public class DbManager : IDbManager
     {
+        /// <summary>
+        /// The initialized log4net logger.
+        /// </summary>
         private readonly ILog _logger;
+        /// <summary>
+        /// Insert query for statements.
+        /// </summary>
         private readonly string _insert;
 
+        /// <summary>
+        /// Constructor. Called by the Nancy-Bootstrapper. Tries to connect to the databases, loads the verb exceptions and gets further required data from the cache.
+        /// </summary>
         public DbManager()
         {
             _logger = Cache.Instance.Logger;
@@ -61,16 +73,34 @@ namespace Database
             LoadExceptions();
         }
 
+        /// <summary>
+        /// Analyzes a question and gets the result from the database.
+        /// </summary>
+        /// <param name="question">The question you want to ask the database.</param>
+        /// <param name="user">User who asked the question.</param>
+        /// <returns>The result in form of a JSON string.</returns>
         public string Ask(string question, string user)
         {
             return AskServer(question, user);
         }
 
+        /// <summary>
+        /// Analyzes a statement and puts it into the database.
+        /// </summary>
+        /// <param name="statement">Sentence(s) you want to put into the database.</param>
+        /// <param name="user">User who stated the sentence(s).</param>
+        /// <returns>Whether the opperation was succesful or not</returns>
         public bool State(string statement, string user)
         {
             return StateOnServer(statement, user);
         }
 
+        /// <summary>
+        /// Analyzes a question and gets the result from the database.
+        /// </summary>
+        /// <param name="question">The question you want to ask the database.</param>
+        /// <param name="user">User who asked the question.</param>
+        /// <returns>The result in form of a JSON string.</returns>
         private string AskServer(string question, string user)
         {
             if (Cache.Instance.LogLevel > 1)
@@ -105,6 +135,12 @@ namespace Database
             return "n/a";
         }
 
+        /// <summary>
+        /// Analyzes a statement and puts it into the database.
+        /// </summary>
+        /// <param name="statement">Sentence(s) you want to put into the database.</param>
+        /// <param name="user">User who stated the sentence(s).</param>
+        /// <returns>Whether the opperation was succesful or not</returns>
         private bool StateOnServer(string statement, string user)
         {
             if (Cache.Instance.LogLevel>1)
@@ -169,6 +205,9 @@ namespace Database
             return true;
         }
 
+        /// <summary>
+        /// Loads the verb exceptions from the App DB and saves them in the Cache.
+        /// </summary>
         private void LoadExceptions()
         {
             _logger.Info("Loading verb exeptions...");
