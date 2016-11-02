@@ -1,2 +1,2 @@
 # SCDB
-A database which converts speech to statements.
+A database-interface which converts speech to statements.
