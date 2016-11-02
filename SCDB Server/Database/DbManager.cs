@@ -276,7 +276,7 @@ namespace Database
                 }
                 else
                 {
-                    _logger.Error("No rows found.");
+                    _logger.Warn("No rows found.");
                 }
             }
         }
