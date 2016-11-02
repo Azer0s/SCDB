@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Exceptions;
 using log4net;
 using Linguistics;
+using Newtonsoft.Json;
 
 namespace Database
 {
@@ -24,10 +25,6 @@ namespace Database
         /// The initialized log4net logger.
         /// </summary>
         private readonly ILog _logger;
-        /// <summary>
-        /// Insert query for statements.
-        /// </summary>
-        private readonly string _insert;
 
         /// <summary>
         /// Constructor. Called by the Nancy-Bootstrapper. Tries to connect to the databases, loads the verb exceptions and gets further required data from the cache.
@@ -35,8 +32,6 @@ namespace Database
         public DbManager()
         {
             _logger = Cache.Instance.Logger;
-            _insert = Cache.Instance.Insert;
-
             var connection = new SqlConnection(Cache.Instance.AppConnectionString);
 
             _logger.Info("Trying to connect to the database 'scdb_app'...");
@@ -130,9 +125,49 @@ namespace Database
                 }
             }
 
-            //TODO Ask question
+            List<string> resultData = new List<string>();
 
-            return "n/a";
+            foreach (var variable in questions)
+            {
+                var connection = new SqlConnection(Cache.Instance.DataConnectionString);
+                var command = new SqlCommand(Cache.Instance.Select, connection);
+
+                command.Parameters.AddWithValue("@Verb", variable.Predicate);
+                command.Parameters.AddWithValue("@Object", variable.Object);
+
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+
+                    if (reader.HasRows && reader != null)
+                    {
+                        while (reader.Read())
+                        {
+                            resultData.Add(reader.GetString(0));
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    if (Cache.Instance.LogLevel > 0)
+                    {
+                        _logger.Error("Something went wrong while selecting data!");
+                    }
+                    return "n/a";
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+            if (Cache.Instance.LogLevel > 2)
+            {
+                _logger.Info("Question succesful!");
+            }
+
+            return JsonConvert.SerializeObject(resultData);
         }
 
         /// <summary>
@@ -173,11 +208,11 @@ namespace Database
             foreach (var variable in statements)
             {
                 var connection = new SqlConnection(Cache.Instance.DataConnectionString);
-                var command = new SqlCommand(_insert,connection);
+                var command = new SqlCommand(Cache.Instance.Insert,connection);
 
-                command.Parameters.AddWithValue("@Subject_Name", variable.Subject);
-                command.Parameters.AddWithValue("@Verb_Name", variable.Predicate);
-                command.Parameters.AddWithValue("@Object_Name", variable.Object);
+                command.Parameters.AddWithValue("@Subject", variable.Subject);
+                command.Parameters.AddWithValue("@Verb", variable.Predicate);
+                command.Parameters.AddWithValue("@Object", variable.Object);
 
                 try
                 {
@@ -186,7 +221,7 @@ namespace Database
                 }
                 catch (Exception)
                 {
-                    if (Cache.Instance.LogLevel > 0)
+                    if (Cache.Instance.LogLevel > 0 )
                     {
                         _logger.Error("Something went wrong while inserting data!");
                     }

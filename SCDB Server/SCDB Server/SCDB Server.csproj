@@ -101,6 +101,7 @@
     <Compile Include="ScdbModule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config.template" />
     <None Include="App.config" />
     <None Include="EnglishPOS.nbin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -111,6 +112,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Log4NetCfg.xml.template">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Log4NetCfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

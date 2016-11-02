@@ -86,9 +86,9 @@ namespace SCDB_Server
                     "DECLARE @Subject_Id AS uniqueidentifier=NEWID();" +
                     "DECLARE @Verb_Id AS uniqueidentifier=NEWID();" +
                     "DECLARE @Object_Id AS uniqueidentifier=NEWID();" +
-                    "INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject_Name); " +
-                    "INSERT INTO Verb (Id, Subject, Name) VALUES (@Verb_Id, @Subject_Id, @Verb_Name); " +
-                    "INSERT INTO Object (Id, Verb, Name) VALUES (@Object_Id, @Verb_Id, @Object_Name);";
+                    "INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject); " +
+                    "INSERT INTO Verb (Id, Name) VALUES (@Verb_Id,@Verb); " +
+                    "INSERT INTO Object (Id, Name) VALUES (@Object_Id, @Object);";
             }
             try
             {

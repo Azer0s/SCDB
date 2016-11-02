@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5.2" />
+  </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Autofac" publicKeyToken="17863af14b0044da" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.1.1.0" newVersion="4.1.1.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <connectionStrings>
+    <add name="data" connectionString="Data Source={Your Server}\SQLEXPRESS;Initial Catalog=scdb_data;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" />
+    <add name="app" connectionString="Data Source={Your Server}\SQLEXPRESS;Initial Catalog=scdb_app;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False" />
+  </connectionStrings>
+  <appSettings>
+    <add key="loglevel" value="2" />
+    <add key="port" value="8066" />
+    <add key="address" value="http://localhost" />
+    <add key="motd" value="SCDB Server connected!" />
+    <add key="insert" value="IF NOT EXISTS(SELECT 1 FROM Verb WHERE Verb.Name=@Verb)BEGIN INSERT INTO Verb VALUES (NEWID(), @Verb);END IF NOT EXISTS (SELECT 1 FROM Subject WHERE Subject.Name=@Subject)BEGIN INSERT INTO Subject VALUES (NEWID(), @Subject);END IF NOT EXISTS( SELECT 1 FROM Object WHERE Object.Name=@Object)BEGIN INSERT INTO Object VALUES (NEWID(), @Object);END DECLARE @Subject_Id AS uniqueidentifier;DECLARE @Verb_Id AS uniqueidentifier;DECLARE @Object_Id AS uniqueidentifier;SELECT @Subject_Id=Subject.Id FROM Subject WHERE Subject.Name=@Subject;SELECT @Verb_Id=Verb.Id FROM Verb WHERE Verb.Name=@Verb;SELECT @Object_Id=Object.Id FROM Object WHERE Object.Name=@Object;IF NOT EXISTS (SELECT 1 FROM Entries WHERE Entries.Subject=@Subject_Id AND Entries.Verb=@Verb_Id AND Entries.Object=@Object_Id) BEGIN INSERT INTO Entries VALUES(@Subject_Id, @Verb_Id, @Object_Id);END" />
+    <add key="select" value="SELECT Subject.Name FROM Entries JOIN Subject ON Entries.Subject=Subject.Id WHERE Entries.Verb = (SELECT Verb.Id FROM Verb WHERE Verb.Name=@Verb) AND Entries.Object=(SELECT Object.Id FROM Object WHERE Object.Name=@Object);" />
+  </appSettings>
+</configuration>
