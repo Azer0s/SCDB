@@ -129,37 +129,89 @@ namespace Database
 
             foreach (var variable in questions)
             {
-                var connection = new SqlConnection(Cache.Instance.DataConnectionString);
-                var command = new SqlCommand(Cache.Instance.Select, connection);
-
-                command.Parameters.AddWithValue("@Verb", variable.Predicate);
-                command.Parameters.AddWithValue("@Object", variable.Object);
-
-                try
+                if (!variable.IsExpression)
                 {
-                    connection.Open();
-                    var reader = command.ExecuteReader();
+                    var connection = new SqlConnection(Cache.Instance.DataConnectionString);
+                    var command = new SqlCommand(Cache.Instance.Select, connection);
 
-                    if (reader.HasRows && reader != null)
+                    command.Parameters.AddWithValue("@Verb", variable.Predicate);
+                    command.Parameters.AddWithValue("@Object", variable.Object);
+
+                    try
                     {
-                        while (reader.Read())
+                        connection.Open();
+                        var reader = command.ExecuteReader();
+
+                        if (reader.HasRows && reader != null)
                         {
-                            resultData.Add(reader.GetString(0));
+                            while (reader.Read())
+                            {
+                                resultData.Add(reader.GetString(0));
+                            }
+                        }
+
+                        if (questions.Count > 1 && questions.IndexOf(variable) != questions.Count-1)
+                        {
+                            resultData.Add("---");
                         }
                     }
-                }
-                catch (Exception)
-                {
-                    if (Cache.Instance.LogLevel > 0)
+                    catch (Exception)
                     {
-                        _logger.Error("Something went wrong while selecting data!");
+                        if (Cache.Instance.LogLevel > 0)
+                        {
+                            _logger.Error("Something went wrong while selecting data!");
+                        }
+                        return "n/a";
                     }
-                    return "n/a";
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
-                finally
+                else
                 {
-                    connection.Close();
-                }
+                    var connection = new SqlConnection(Cache.Instance.DataConnectionString);
+                    var command = new SqlCommand(Cache.Instance.SelectState, connection);
+
+                    command.Parameters.AddWithValue("@Subject", variable.Subject);
+                    command.Parameters.AddWithValue("@Verb", variable.Predicate);
+                    command.Parameters.AddWithValue("@Object", variable.Object);
+
+                    try
+                    {
+                        connection.Open();
+                        var reader = command.ExecuteReader();
+
+                        if (reader.HasRows)
+                        {
+                            resultData.Add("true");
+                            if (questions.Count > 1 && questions.IndexOf(variable) != questions.Count - 1)
+                            {
+                                resultData.Add("---");
+                            }
+                        }
+                        else
+                        {
+                            resultData.Add("false");
+                            if (questions.Count > 1 && questions.IndexOf(variable) != questions.Count - 1)
+                            {
+                                resultData.Add("---");
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        if (Cache.Instance.LogLevel > 0)
+                        {
+                            _logger.Error("Something went wrong while inserting data!");
+                        }
+                        return "n/a";
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }   
             }
 
             if (Cache.Instance.LogLevel > 2)

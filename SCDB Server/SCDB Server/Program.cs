@@ -103,7 +103,29 @@ namespace SCDB_Server
                 logger.Warn("Select statement not specified, using default!",
                     new StatementNotSpecifiedException("Select statement not specified!"));
                 someErrors = true;
-                Cache.Instance.Select = "" /*TODO Add default select statement*/;
+                Cache.Instance.Select = "SELECT Subject.Name " +
+                                        "FROM Entries JOIN Subject ON Entries.Subject=Subject.Id " +
+                                        "WHERE Entries.Verb = (SELECT Verb.Id FROM Verb WHERE Verb.Name=@Verb) " +
+                                        "AND Entries.Object=(SELECT Object.Id FROM Object WHERE Object.Name=@Object);";
+            }
+            try
+            {
+                Cache.Instance.SelectState = System.Configuration.ConfigurationManager.AppSettings["selectState"];
+                if (Cache.Instance.SelectState == null)
+                {
+                    throw new StatementNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("Select (state) statement not specified, using default!",
+                    new StatementNotSpecifiedException("Select (state) statement not specified!"));
+                someErrors = true;
+                Cache.Instance.Select = "SELECT Subject.Name " +
+                                        "FROM Entries JOIN Subject ON Entries.Subject=Subject.Id " +
+                                        "WHERE Entries.Verb = (SELECT Verb.Id FROM Verb WHERE Verb.Name=@Verb) " +
+                                        "AND Entries.Object=(SELECT Object.Id FROM Object WHERE Object.Name=@Object) " +
+                                        "AND Entries.Subject = (SELECT Subject.Id FROM Subject WHERE Subject.Name = @Subject);";
             }
             try
             {

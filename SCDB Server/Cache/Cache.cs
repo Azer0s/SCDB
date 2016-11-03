@@ -46,6 +46,10 @@ public sealed class Cache
     /// </summary>
     public string Select { get; set; }
     /// <summary>
+    /// Select statement for question commands which are statements.
+    /// </summary>
+    public string SelectState { get; set; }
+    /// <summary>
     /// Determines which messages are logged.
     /// </summary>
     /// -1...None;

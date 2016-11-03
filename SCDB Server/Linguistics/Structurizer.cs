@@ -44,14 +44,22 @@ namespace Linguistics
             if ((analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP") && !question)
             {
                 spo.Subject = analyzed[0].Word;
+                spo.IsExpression = true;
+            }
+
+            if ((analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP") && question)
+            {
+                spo.Subject = analyzed[0].Word;
+                spo.IsExpression = true;
             }
 
             if ((analyzed[0].Type == "WP" || analyzed[0].Type == "WRB" || analyzed[0].Type == "WDT" || analyzed[0].Type == "WP$") && question)
             {
                 spo.Subject = analyzed[0].Word;
+                spo.IsExpression = false;
             }
 
-            if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBP" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
+            if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBD" || analyzed[1].Type == "VBP" || analyzed[1].Type == "VB" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
             {
                 spo.Predicate = analyzed[1].Word;
             }

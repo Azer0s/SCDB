@@ -14,6 +14,7 @@ namespace Linguistics
         public string Subject { get; set; }
         public string Predicate { get; set; }
         public string Object { get; set; }
+        public bool IsExpression { get; set; }
 
         /// <summary>
         /// Indexer for the SPO object.
