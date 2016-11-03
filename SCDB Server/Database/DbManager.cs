@@ -103,6 +103,15 @@ namespace Database
                 _logger.Info($"{user} sent a question");
             }
 
+            if (question.Contains('.'))
+            {
+                return "n/a";
+            }
+            if (!question.Contains('?'))
+            {
+                return "n/a";
+            }
+
             var questionList = question.Split('?');
             var questions = new List<SPO>();
 
@@ -233,6 +242,15 @@ namespace Database
             if (Cache.Instance.LogLevel>1)
             {
                 _logger.Info($"{user} stated information");
+            }
+
+            if (statement.Contains('?'))
+            {
+                return false;
+            }
+            if (!statement.Contains('.'))
+            {
+                return false;
             }
 
             var statementList = statement.Split('.');
