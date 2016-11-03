@@ -179,6 +179,46 @@ namespace Database
                 }
                 else
                 {
+                    if (variable.Subject.ToLower().Equals("listall"))
+                    {
+                        var connect = new SqlConnection(Cache.Instance.DataConnectionString);
+                        var cmd = new SqlCommand(Cache.Instance.ListAll, connect);
+
+                        cmd.Parameters.AddWithValue("@Subject", variable.Predicate);
+
+                        try
+                        {
+                            connect.Open();
+                            var reader = cmd.ExecuteReader();
+
+                            if (reader.HasRows && reader != null)
+                            {
+                                while (reader.Read())
+                                {
+                                    resultData.Add(variable.Predicate + " " + reader.GetString(0) + " " + reader.GetString(1));
+                                }
+                            }
+
+                            if (questions.Count > 1 && questions.IndexOf(variable) != questions.Count - 1)
+                            {
+                                resultData.Add("---");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            if (Cache.Instance.LogLevel > 0)
+                            {
+                                _logger.Error("Something went wrong while selecting data!");
+                            }
+                            return "n/a";
+                        }
+                        finally
+                        {
+                            connect.Close();
+                        }
+                        continue;
+                    }
+
                     var connection = new SqlConnection(Cache.Instance.DataConnectionString);
                     var command = new SqlCommand(Cache.Instance.SelectState, connection);
 

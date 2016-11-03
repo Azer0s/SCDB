@@ -50,6 +50,10 @@ public sealed class Cache
     /// </summary>
     public string SelectState { get; set; }
     /// <summary>
+    /// Select statement to list all predicates for a subject.
+    /// </summary>
+    public string ListAll { get; set; }
+    /// <summary>
     /// Determines which messages are logged.
     /// </summary>
     /// -1...None;

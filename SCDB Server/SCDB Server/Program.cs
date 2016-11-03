@@ -83,12 +83,17 @@ namespace SCDB_Server
                     new StatementNotSpecifiedException("Insert statement not specified!"));
                 someErrors = true;
                 Cache.Instance.Insert =
-                    "DECLARE @Subject_Id AS uniqueidentifier=NEWID();" +
-                    "DECLARE @Verb_Id AS uniqueidentifier=NEWID();" +
-                    "DECLARE @Object_Id AS uniqueidentifier=NEWID();" +
-                    "INSERT INTO Subject (Id, Name) VALUES (@Subject_Id, @Subject); " +
-                    "INSERT INTO Verb (Id, Name) VALUES (@Verb_Id,@Verb); " +
-                    "INSERT INTO Object (Id, Name) VALUES (@Object_Id, @Object);";
+                    "IF NOT EXISTS(SELECT 1 FROM Verb WHERE Verb.Name=@Verb) " +
+                    "BEGIN " +
+                    "INSERT INTO Verb VALUES(NEWID(), @Verb);" +
+                    "END " +
+                    "IF NOT EXISTS (SELECT 1 FROM Subject WHERE Subject.Name = @Subject) " +
+                    "BEGIN INSERT INTO Subject VALUES(NEWID(), @Subject); " +
+                    "END " +
+                    "IF NOT EXISTS(SELECT 1 FROM Object WHERE Object.Name = @Object) " +
+                    "BEGIN " +
+                    "INSERT INTO Object VALUES(NEWID(), @Object);" +
+                    "END";
             }
             try
             {
@@ -107,6 +112,25 @@ namespace SCDB_Server
                                         "FROM Entries JOIN Subject ON Entries.Subject=Subject.Id " +
                                         "WHERE Entries.Verb = (SELECT Verb.Id FROM Verb WHERE Verb.Name=@Verb) " +
                                         "AND Entries.Object=(SELECT Object.Id FROM Object WHERE Object.Name=@Object);";
+            }
+            try
+            {
+                Cache.Instance.ListAll = System.Configuration.ConfigurationManager.AppSettings["listAll"];
+                if (Cache.Instance.ListAll == null)
+                {
+                    throw new StatementNotSpecifiedException("");
+                }
+            }
+            catch (Exception)
+            {
+                logger.Warn("List-all statement not specified, using default!",
+                    new StatementNotSpecifiedException("List-all statement not specified!"));
+                someErrors = true;
+                Cache.Instance.ListAll = "SELECT v.Name, o.Name FROM Entries e " +
+                                         "JOIN Verb v ON v.Id = e.Verb " +
+                                         "JOIN Object o ON o.Id = e.Object " +
+                                         "WHERE e.Subject = (SELECT Subject.Id FROM Subject " +
+                                         "WHERE Subject.Name = @Subject);";
             }
             try
             {

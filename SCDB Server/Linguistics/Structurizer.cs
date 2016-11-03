@@ -47,7 +47,7 @@ namespace Linguistics
                 spo.IsExpression = true;
             }
 
-            if ((analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP") && question)
+            if ((analyzed[0].Type == "NNP" || analyzed[0].Type == "NNS" || analyzed[0].Type == "PRP" || analyzed[0].Word.ToLower().Equals("listall")) && question)
             {
                 spo.Subject = analyzed[0].Word;
                 spo.IsExpression = true;
@@ -59,7 +59,7 @@ namespace Linguistics
                 spo.IsExpression = false;
             }
 
-            if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBD" || analyzed[1].Type == "VBP" || analyzed[1].Type == "VB" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
+            if (analyzed[1].Type == "VBG" || analyzed[1].Type == "VBN" || analyzed[1].Type == "VBD" || analyzed[1].Type == "VBP" || analyzed[1].Type == "VB" || analyzed[1].Type == "MD" || analyzed[1].Type == "NN" || analyzed[0].Word.ToLower().Equals("listall") || Cache.Instance.VerbExceptions.Contains(analyzed[1].Word))
             {
                 spo.Predicate = analyzed[1].Word;
             }
